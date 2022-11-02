@@ -4,6 +4,7 @@ import com.crud.tasks.domain.Task;
 import com.crud.tasks.domain.TaskDto;
 import com.crud.tasks.mapper.TaskMapper;
 import com.crud.tasks.service.DbService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,35 +15,36 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/tasks")
+@RequiredArgsConstructor
+@CrossOrigin("*")
 public class TaskController {
 
     private final DbService service;
     private final TaskMapper taskMapper;
 
-    @Autowired
-    public TaskController(DbService service, TaskMapper taskMapper) {
-        this.service = service;
-        this.taskMapper = taskMapper;
-    }
-
     @GetMapping
+    @CrossOrigin("*")
     public ResponseEntity<List<TaskDto>> getTasks() {
-        List<Task> tasks = service.getAllTasks();
-        return ResponseEntity.ok(taskMapper.mapToTaskDtoList(tasks));
+        return ResponseEntity.ok(taskMapper.mapToTaskDtoList(service.getAllTasks()));
     }
 
     @GetMapping(value = "{taskId}")
+    @CrossOrigin("*")
     public ResponseEntity<TaskDto> getTask(@PathVariable Long taskId) throws TaskNotFoundException {
-        return new ResponseEntity<>(taskMapper.mapToTaskDto(service.getTask(taskId)), HttpStatus.OK);
+        return ResponseEntity.ok(taskMapper.mapToTaskDto(service.getTask(taskId)));
     }
 
-    @DeleteMapping(value = "{taskId}")
-    public ResponseEntity<Void> deleteTask(@PathVariable Long taskId) {
-        service.deleteById(taskId);
+    @DeleteMapping
+    @CrossOrigin("*")
+    public ResponseEntity<Void> deleteTask(@RequestParam Long taskId) {
+
+        service.deleteTask(taskId);
         return ResponseEntity.ok().build();
+
     }
 
     @PutMapping
+    @CrossOrigin("*")
     public ResponseEntity<TaskDto> updateTask(@RequestBody TaskDto taskDto) {
         Task task = taskMapper.mapToTask(taskDto);
         Task savedTask = service.saveTask(task);
@@ -50,6 +52,7 @@ public class TaskController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin("*")
     public ResponseEntity<Void> createTask(@RequestBody TaskDto taskDto) {
         Task task = taskMapper.mapToTask(taskDto);
         service.saveTask(task);
