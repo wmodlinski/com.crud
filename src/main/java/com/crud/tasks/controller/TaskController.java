@@ -5,7 +5,6 @@ import com.crud.tasks.domain.TaskDto;
 import com.crud.tasks.mapper.TaskMapper;
 import com.crud.tasks.service.DbService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -37,10 +36,12 @@ public class TaskController {
     @DeleteMapping
     @CrossOrigin("*")
     public ResponseEntity<Void> deleteTask(@RequestParam Long taskId) {
-
-        service.deleteTask(taskId);
-        return ResponseEntity.ok().build();
-
+        try {
+            service.deleteTask(taskId);
+            return ResponseEntity.ok().build();
+        }catch (TaskNotFoundException exception){
+            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping
