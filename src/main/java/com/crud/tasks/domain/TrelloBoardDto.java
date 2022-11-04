@@ -1,6 +1,5 @@
-package com.crud.tasks.trello.domain;
+package com.crud.tasks.domain;
 
-import com.crud.tasks.trello.domain.TrelloListDto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
