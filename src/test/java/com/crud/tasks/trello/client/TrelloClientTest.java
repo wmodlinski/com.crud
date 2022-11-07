@@ -3,7 +3,6 @@ package com.crud.tasks.trello.client;
 import com.crud.tasks.domain.CreatedTrelloCardDto;
 import com.crud.tasks.domain.TrelloBoardDto;
 import com.crud.tasks.domain.TrelloCardDto;
-import com.crud.tasks.trello.client.TrelloClient;
 import com.crud.tasks.trello.config.TrelloConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -99,7 +98,6 @@ class TrelloClientTest {
     @Test
     public void shouldReturnEmptyList() throws URISyntaxException {
 
-        //given
         // Given
         when(trelloConfig.getTrelloApiEndpoint()).thenReturn("http://test.com");
         when(trelloConfig.getTrelloAppKey()).thenReturn("test");
@@ -116,7 +114,7 @@ class TrelloClientTest {
         // When
         List<TrelloBoardDto> fetchedTrelloBoards = trelloClient.getTrelloBoards();
 
-        //then
+        // Then
         assertEquals(0,fetchedTrelloBoards.size());
 
     }
